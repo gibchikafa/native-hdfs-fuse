@@ -239,9 +239,9 @@ static uint32_t crc32c_hw(uint32_t crc, const void * buf, size_t len)
   /* compute the crc for up to seven leading bytes to bring the data pointer
      to an eight-byte boundary */
   while (len && ((uintptr_t)next & 7) != 0) {
-    __asm__("crc32b\t" "(%1), %0"
-            : "=r" (crc0)
-            : "r" (next), "0" (crc0));
+    __asm__ ("crc32b\t" "(%1), %0"
+             : "=r" (crc0)
+             : "r" (next), "0" (crc0));
     next++;
     len--;
   }
@@ -255,11 +255,11 @@ static uint32_t crc32c_hw(uint32_t crc, const void * buf, size_t len)
     crc2 = 0;
     end = next + LONG;
     do {
-      __asm__("crc32q\t" "(%3), %0\n\t"
-              "crc32q\t" LONGx1 "(%3), %1\n\t"
-              "crc32q\t" LONGx2 "(%3), %2"
-              : "=r" (crc0), "=r" (crc1), "=r" (crc2)
-              : "r" (next), "0" (crc0), "1" (crc1), "2" (crc2));
+      __asm__ ("crc32q\t" "(%3), %0\n\t"
+               "crc32q\t" LONGx1 "(%3), %1\n\t"
+               "crc32q\t" LONGx2 "(%3), %2"
+               : "=r" (crc0), "=r" (crc1), "=r" (crc2)
+               : "r" (next), "0" (crc0), "1" (crc1), "2" (crc2));
       next += 8;
     } while (next < end);
     crc0 = crc32c_shift(crc32c_long, crc0) ^ crc1;
@@ -275,11 +275,11 @@ static uint32_t crc32c_hw(uint32_t crc, const void * buf, size_t len)
     crc2 = 0;
     end = next + SHORT;
     do {
-      __asm__("crc32q\t" "(%3), %0\n\t"
-              "crc32q\t" SHORTx1 "(%3), %1\n\t"
-              "crc32q\t" SHORTx2 "(%3), %2"
-              : "=r" (crc0), "=r" (crc1), "=r" (crc2)
-              : "r" (next), "0" (crc0), "1" (crc1), "2" (crc2));
+      __asm__ ("crc32q\t" "(%3), %0\n\t"
+               "crc32q\t" SHORTx1 "(%3), %1\n\t"
+               "crc32q\t" SHORTx2 "(%3), %2"
+               : "=r" (crc0), "=r" (crc1), "=r" (crc2)
+               : "r" (next), "0" (crc0), "1" (crc1), "2" (crc2));
       next += 8;
     } while (next < end);
     crc0 = crc32c_shift(crc32c_short, crc0) ^ crc1;
@@ -292,18 +292,18 @@ static uint32_t crc32c_hw(uint32_t crc, const void * buf, size_t len)
      block */
   end = next + (len - (len & 7));
   while (next < end) {
-    __asm__("crc32q\t" "(%1), %0"
-            : "=r" (crc0)
-            : "r" (next), "0" (crc0));
+    __asm__ ("crc32q\t" "(%1), %0"
+             : "=r" (crc0)
+             : "r" (next), "0" (crc0));
     next += 8;
   }
   len &= 7;
 
   /* compute the crc for up to seven trailing bytes */
   while (len) {
-    __asm__("crc32b\t" "(%1), %0"
-            : "=r" (crc0)
-            : "r" (next), "0" (crc0));
+    __asm__ ("crc32b\t" "(%1), %0"
+             : "=r" (crc0)
+             : "r" (next), "0" (crc0));
     next++;
     len--;
   }
@@ -321,10 +321,10 @@ static uint32_t crc32c_hw(uint32_t crc, const void * buf, size_t len)
   do { \
     uint32_t eax, ecx; \
     eax = 1; \
-    __asm__("cpuid" \
-            : "=c" (ecx) \
-            : "a" (eax) \
-            : "%ebx", "%edx"); \
+    __asm__ ("cpuid" \
+             : "=c" (ecx) \
+             : "a" (eax) \
+             : "%ebx", "%edx"); \
     (have) = (ecx >> 20) & 1; \
   } while (0)
 

@@ -394,7 +394,7 @@ static
 int hadoop_rpc_receive_proto(
   struct connection_state * state,
   ProtobufCMessage ** out,
-  ProtobufCMessage * (* unpack)(ProtobufCAllocator  *, size_t, const uint8_t *))
+  ProtobufCMessage * (*unpack)(ProtobufCAllocator  *, size_t, const uint8_t *))
 {
   int res;
   uint8_t len_varint[5];
@@ -858,4 +858,3 @@ int hadoop_rpc_send_packets(
 
   return res < 0 ? res : 0;
 }
-
